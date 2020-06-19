@@ -1,19 +1,36 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   title: string;
   subtitle: string;
   active?: boolean;
+  incomplete?: boolean;
 };
 
-export default function ListItem({ title, subtitle, active }: Props) {
+export default function ListItem({
+  title,
+  subtitle,
+  incomplete,
+  active,
+}: Props) {
+  const navigate = useNavigate();
+
   return (
-    <li className="p-6 flex hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
+    <li
+      onClick={() => navigate("123")}
+      className="p-6 flex hover:bg-gray-100 transition-colors duration-150 cursor-pointer"
+    >
       <div className="flex-1">
         <div className="font-bold text-gray-900">{title}</div>
         <div className="text-gray-600">{subtitle}</div>
       </div>
       <div className="flex items-center">
+        {incomplete && (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-yellow-100 text-yellow-800 mr-2">
+            Incomplete
+          </span>
+        )}
         {active ? (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-green-100 text-green-800">
             Active
