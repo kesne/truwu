@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "parcel ./src/index.html"
+  },
   "dependencies": {
     "@tailwindcss/ui": "^0.3.0",
     "autoprefixer": "^9.8.0",
     "clsx": "^1.1.1",
+    "mobx": "^5.15.5",
+    "mobx-react-lite": "^2.0.7",
+    "mobx-state-tree": "^3.17.2",
     "parcel": "^2.0.0-beta.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
+  id: number;
   title: string;
   subtitle: string;
   active?: boolean;
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export default function ListItem({
+  id,
   title,
   subtitle,
   incomplete,
@@ -16,9 +18,13 @@ export default function ListItem({
 }: Props) {
   const navigate = useNavigate();
 
+  console.log(id);
+
   return (
     <li
-      onClick={() => navigate("123")}
+      onClick={() => {
+        navigate(String(id));
+      }}
       className="p-6 flex hover:bg-gray-100 transition-colors duration-150 cursor-pointer"
     >
       <div className="flex-1">

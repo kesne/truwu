@@ -21,7 +21,9 @@ export default function Enabled({ enabled, onChange }: Props) {
           !enabled && "bg-gray-200",
           enabled && "bg-indigo-600"
         )}
-        onClick={() => onChange(!enabled)}
+        onClick={() => {
+          onChange(!enabled);
+        }}
       >
         <span
           aria-hidden="true"
