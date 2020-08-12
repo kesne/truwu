@@ -19,7 +19,7 @@ type Props = {
 
 export default function Header({ title, action }: Props) {
   return (
-    <div className="p-6 grid grid-cols-3">
+    <div className="p-4 grid grid-cols-3">
       <Section className="justify-start">
         <Link
           to=".."

@@ -27,11 +27,10 @@ export default observer(() => {
               strokeWidth="2"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              className="h-6 w-6 mr-2"
+              className="h-6 w-6"
             >
               <path d="M12 4v16m8-8H4"></path>
             </svg>
-            Create
           </button>
         }
       />

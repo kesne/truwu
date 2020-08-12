@@ -3,13 +3,13 @@ import clsx from "clsx";
 
 type Props = {
   enabled: boolean;
-  onChange(enabled: boolean): void;
+  onToggle(): void;
 };
 
-export default function Enabled({ enabled, onChange }: Props) {
+export default function Enabled({ enabled, onToggle }: Props) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-sm font-medium leading-5 text-gray-700">
+      <span className="text-sm font-medium leading-5 text-gray-700" onClick={onToggle}>
         Enabled
       </span>
       <span
@@ -21,9 +21,7 @@ export default function Enabled({ enabled, onChange }: Props) {
           !enabled && "bg-gray-200",
           enabled && "bg-indigo-600"
         )}
-        onClick={() => {
-          onChange(!enabled);
-        }}
+        onClick={onToggle}
       >
         <span
           aria-hidden="true"

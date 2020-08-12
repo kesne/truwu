@@ -1,0 +1,19 @@
+{
+  "appId": "rip.vapejuicejordan.truwu",
+  "productName": "truwu",
+  "compression": "store",
+  "mac": {
+    "identity": null
+  },
+  "linux": {
+    "target": "AppImage"
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "kesne",
+      "repo": "truwu",
+      "releaseType": "release"
+    }
+  ]
+}

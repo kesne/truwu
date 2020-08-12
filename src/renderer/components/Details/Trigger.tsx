@@ -6,6 +6,7 @@ import {
   MatchCondition,
   TriggerType,
   CheerTriggerConfig,
+  ChannelPointsTriggerConfig,
 } from "../../models/Triggers";
 
 // function Message() {
@@ -35,7 +36,7 @@ import {
 
 const Cheer = observer(
   ({ config }: { config: Instance<typeof CheerTriggerConfig> }) => (
-    <>
+    <div className="grid grid-cols-2 col-gap-4">
       <label className="block text-sm font-medium leading-5 text-gray-700">
         Amount
         <div className="mt-1 relative rounded-md shadow-sm">
@@ -44,9 +45,7 @@ const Cheer = observer(
             className="form-input block w-full sm:text-sm sm:leading-5"
             type="number"
             value={String(config.amount)}
-            onChange={(e) =>
-              config.setAmount(parseInt(e.target.value, 10) || null)
-            }
+            onChange={(e) => config.setAmount(Number(e.target.value) || null)}
           />
         </div>
       </label>
@@ -67,13 +66,29 @@ const Cheer = observer(
           <option value={MatchCondition.LESS_THAN}>&lt; (less than)</option>
         </select>
       </label>
-    </>
+    </div>
+  )
+);
+
+const ChannelPoints = observer(
+  ({ config }: { config: Instance<typeof ChannelPointsTriggerConfig> }) => (
+    <label className="block text-sm font-medium leading-5 text-gray-700">
+      Name
+      <div className="mt-1 relative rounded-md shadow-sm">
+        <input
+          autoComplete="off"
+          className="form-input block w-full sm:text-sm sm:leading-5"
+          value={config.name}
+          onChange={(e) => config.setName(e.target.value)}
+        />
+      </div>
+    </label>
   )
 );
 
 const TriggerConfig = {
   [TriggerType.CHEER]: Cheer,
-  // [TriggerType.]: Reward,
+  [TriggerType.CHANNEL_POINTS]: ChannelPoints,
 };
 
 type Props = {
@@ -105,12 +120,23 @@ export default observer(({ trigger }: Props) => {
           <option value={TriggerType.CHEER}>Cheer</option>
           <option value={TriggerType.FOLLOW}>New Follow</option>
           <option value={TriggerType.SUBSCRIPTION}>New Subscription</option>
-          <option disabled>Channel Points Reward (coming soon)</option>
+          <option value={TriggerType.CHANNEL_POINTS}>
+            Channel Points Reward
+          </option>
           <option disabled>Hype Train (coming soon)</option>
           <option disabled>Chat Message (coming soon)</option>
         </select>
       </label>
       {ConfigComponent && <ConfigComponent config={trigger.config} />}
+      <div className="flex justify-end">
+        <button
+          type="button"
+          className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:border-red-300 focus:shadow-outline-indigo active:bg-indigo-200 transition ease-in-out duration-150"
+          onClick={trigger.delete}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 });

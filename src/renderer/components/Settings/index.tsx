@@ -23,7 +23,8 @@ export default observer(() => {
           <div className="mt-1 relative rounded-md shadow-sm">
             <input
               className="form-input block w-full sm:text-sm sm:leading-5"
-              placeholder="abc123"
+              placeholder="Key..."
+              type="password"
               value={store.settings.quirkAPIKey}
               onChange={(e) => store.settings.setQuirkAPIKey(e.target.value)}
             />

@@ -18,8 +18,6 @@ export default function ListItem({
 }: Props) {
   const navigate = useNavigate();
 
-  console.log(id);
-
   return (
     <li
       onClick={() => {
