@@ -1,7 +1,9 @@
 import React, { useContext, createContext, useEffect, useState } from "react";
 import { Instance, onSnapshot, applySnapshot } from "mobx-state-tree";
-import localForage from "localforage";
+import Store from "electron-store";
 import { RootModel } from "./Root";
+
+const store = new Store();
 
 export const rootStore = RootModel.create({
   settings: {},
@@ -10,9 +12,9 @@ export const rootStore = RootModel.create({
 
 const STORAGE_KEY = "truwu-v2";
 
-onSnapshot(rootStore, async (snapshot) => {
+onSnapshot(rootStore, (snapshot) => {
   console.log("Snapshot: ", snapshot);
-  await localForage.setItem(STORAGE_KEY, snapshot);
+  store.set(STORAGE_KEY, snapshot);
   console.log("Snapshot persisted to storage.");
 });
 
@@ -23,14 +25,13 @@ export function Provider({ children }: { children: React.ReactNode }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    localForage.getItem(STORAGE_KEY, (_err, data) => {
-      if (data) {
-        console.log("Hydrating store from snapshot", data);
-        applySnapshot(rootStore, data);
-      }
+    const data = store.get(STORAGE_KEY);
+    if (data) {
+      console.log("Hydrating store from snapshot", data);
+      applySnapshot(rootStore, data);
+    }
 
-      setLoaded(true);
-    });
+    setLoaded(true);
   }, []);
 
   if (!loaded) return null;

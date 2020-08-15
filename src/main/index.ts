@@ -1,15 +1,27 @@
 import path from "path";
 import url from "url";
-import { app } from "electron";
+import { app, ipcMain } from "electron";
 import is from "electron-is";
 import { menubar, Menubar } from "menubar";
 import { autoUpdater } from "electron-updater";
+import DMX from 'dmx';
 
 autoUpdater.checkForUpdatesAndNotify();
 
 let mb: Menubar;
 
 app.commandLine.appendSwitch("ignore-certificate-errors");
+
+const dmx = new DMX();
+// TODO: Move the configuration of this to settings.
+const universe = dmx.addUniverse(
+  "fog",
+  "dmxking-ultra-dmx-pro",
+  "/dev/cu.usbserial-6A4W21TF"
+);
+ipcMain.on("dmx", (_event, arg) => {
+  universe.update(arg);
+});
 
 app.on("ready", () => {
   mb = menubar({
@@ -23,9 +35,9 @@ app.on("ready", () => {
     // icon: path.resolve(__dirname, 'IconTemplate.png'),
     tooltip: "UwU",
     browserWindow: {
-    //   transparent: true,
-    //   resizable: false,
-    //   fullscreenable: false,
+      //   transparent: true,
+      //   resizable: false,
+      //   fullscreenable: false,
       width: 500,
       height: 600,
       webPreferences: {

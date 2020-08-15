@@ -2,15 +2,16 @@ import React from "react";
 import clsx from "clsx";
 
 type Props = {
+  title: string;
   enabled: boolean;
   onToggle(): void;
 };
 
-export default function Enabled({ enabled, onToggle }: Props) {
+export default function Toggle({ title, enabled, onToggle }: Props) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-sm font-medium leading-5 text-gray-700" onClick={onToggle}>
-        Enabled
+        {title}
       </span>
       <span
         role="checkbox"

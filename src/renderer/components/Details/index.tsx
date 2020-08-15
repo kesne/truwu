@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router";
 import { observer } from "mobx-react-lite";
 import Header from "../Header";
-import Enabled from "./Enabled";
+import Toggle from "./Toggle";
 import Trigger from "./Trigger";
 import { useMst } from "../../models";
 import Actions from "./Actions";
@@ -19,7 +19,7 @@ function SectionHeader({
   onClick(): void;
 }) {
   return (
-    <div className="sticky top-0 bg-white p-6">
+    <div className="sticky bg-white p-6 z-10 header-offset">
       <div className="flex justify-between items-center">
         <div>
           <div className="font-bold text-xl">{title}</div>
@@ -43,7 +43,7 @@ export default observer(() => {
   const routine = store.routines.items[parseInt(params.id, 10)];
 
   return (
-    <div className="divide-y">
+    <>
       <Header
         title={routine.name}
         action={
@@ -54,58 +54,74 @@ export default observer(() => {
           )
         }
       />
-
-      <div className="p-6">
-        <div className="space-y-6">
-          <label className="block text-sm font-medium leading-5 text-gray-700">
-            Name
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <input
-                autoComplete="off"
-                className="form-input block w-full sm:text-sm sm:leading-5"
-                value={routine.name}
-                onChange={(e) => routine.setName(e.target.value)}
+      <div className="divide-y">
+        <div className="p-6">
+          <div className="space-y-6">
+            <label className="block text-sm font-medium leading-5 text-gray-700">
+              Name
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <input
+                  autoComplete="off"
+                  className="form-input block w-full sm:text-sm sm:leading-5"
+                  value={routine.name}
+                  onChange={(e) => routine.setName(e.target.value)}
+                />
+              </div>
+            </label>
+            <div>
+              <Toggle
+                title="Enabled"
+                enabled={routine.enabled}
+                onToggle={() => routine.toggleEnabled()}
               />
             </div>
-          </label>
-          <div>
-            <Enabled
-              enabled={routine.enabled}
-              onToggle={() => routine.toggleEnabled()}
-            />
+            <div>
+              <Toggle
+                title="Require Approval"
+                enabled={routine.requireApproval}
+                onToggle={() => routine.toggleRequireApproval()}
+              />
+            </div>
+            <div>
+              <Toggle
+                title="Run In Queue"
+                enabled={routine.queue}
+                onToggle={() => routine.toggleQueue()}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <SectionHeader
-          title="Triggers"
-          subtitle="Control which events cause this routine to fire."
-          action="Add"
-          onClick={routine.createTrigger}
-        />
-        <div className="p-6 space-y-2">
-          {routine.triggers.map((trigger, i) => (
-            <Trigger key={i} trigger={trigger} />
-          ))}
+        <div>
+          <SectionHeader
+            title="Triggers"
+            subtitle="Control which events cause this routine to fire."
+            action="Add"
+            onClick={routine.createTrigger}
+          />
+          <div className="p-6 space-y-2">
+            {routine.triggers.map((trigger, i) => (
+              <Trigger key={i} trigger={trigger} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div>
-        <SectionHeader
-          title="Actions"
-          subtitle="Define what happens when this routine is triggered."
-          action="Add"
-          onClick={routine.createAction}
-        />
+        <div>
+          <SectionHeader
+            title="Actions"
+            subtitle="Define what happens when this routine is triggered."
+            action="Add"
+            onClick={routine.createAction}
+          />
+          <div className="p-6">
+            <Actions routine={routine} />
+          </div>
+        </div>
         <div className="p-6">
-          <Actions routine={routine} />
+          <div className="flex justify-between items-center">
+            <div className="font-bold text-xl">Test Routine</div>
+          </div>
+          <p>TODO: Allow us to test the routine.</p>
         </div>
       </div>
-      <div className="p-6">
-        <div className="flex justify-between items-center">
-          <div className="font-bold text-xl">Test Routine</div>
-        </div>
-        <p>TODO: Allow us to test the routine.</p>
-      </div>
-    </div>
+    </>
   );
 });

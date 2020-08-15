@@ -3,7 +3,6 @@ import { Instance } from "mobx-state-tree";
 import { observer } from "mobx-react-lite";
 import {
   Trigger,
-  MatchCondition,
   TriggerType,
   CheerTriggerConfig,
   ChannelPointsTriggerConfig,
@@ -36,37 +35,17 @@ import {
 
 const Cheer = observer(
   ({ config }: { config: Instance<typeof CheerTriggerConfig> }) => (
-    <div className="grid grid-cols-2 col-gap-4">
-      <label className="block text-sm font-medium leading-5 text-gray-700">
-        Amount
-        <div className="mt-1 relative rounded-md shadow-sm">
-          <input
-            autoComplete="off"
-            className="form-input block w-full sm:text-sm sm:leading-5"
-            type="number"
-            value={String(config.amount)}
-            onChange={(e) => config.setAmount(Number(e.target.value) || null)}
-          />
-        </div>
-      </label>
-      <label className="block text-sm leading-5 font-medium text-gray-700">
-        Match Condition
-        <select
-          value={config.matchCondition}
-          onChange={(e) => {
-            const value = e.target.value as MatchCondition;
-            config.setMatchCondition(value);
-          }}
-          className="mt-1 form-select block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-        >
-          <option value={MatchCondition.EQUALS}>= (equals)</option>
-          <option value={MatchCondition.GREATER_THAN}>
-            &gt; (greater than)
-          </option>
-          <option value={MatchCondition.LESS_THAN}>&lt; (less than)</option>
-        </select>
-      </label>
-    </div>
+    <label className="block text-sm font-medium leading-5 text-gray-700">
+      Condition
+      <div className="mt-1 relative rounded-md shadow-sm">
+        <input
+          autoComplete="off"
+          className="form-input block w-full sm:text-sm sm:leading-5"
+          value={config.condition}
+          onChange={(e) => config.setCondition(e.target.value)}
+        />
+      </div>
+    </label>
   )
 );
 

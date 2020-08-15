@@ -6,7 +6,7 @@ const QUIRK_DOMAIN = "websocket.quirk.gg";
 
 export default function useQuirkConnection(
   apiKey: string,
-  onMessage: (event: object) => void
+  onMessage: (event: Record<string, any>) => void
 ) {
   useEffect(() => {
     let websocket: WebSocket;

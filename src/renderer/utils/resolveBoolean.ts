@@ -7,9 +7,12 @@ parser.registerFunction("random", Math.random);
 parser.registerFunction("round", Math.round);
 parser.registerFunction("floor", Math.floor);
 
-export default function resolve(
+export default function resolveBoolean(
   source: string,
   variables: Record<string, any>
 ) {
-  return parser.parse(source).eval(variables);
+  console.log(source, variables);
+  const template = parser.parse(String(source));
+  const value = template.eval(variables);
+  return Boolean(value);
 }

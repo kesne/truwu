@@ -2,12 +2,6 @@ import { types, getParent } from "mobx-state-tree";
 import { Routine } from "./Routines";
 import { createLiteral } from "./utils";
 
-export enum MatchCondition {
-  EQUALS = "EQUALS",
-  GREATER_THAN = "GREATER_THAN",
-  LESS_THAN = "LESS_THAN",
-}
-
 export enum TriggerType {
   EMPTY = "EMPTY",
   CHEER = "CHEER",
@@ -19,26 +13,19 @@ export enum TriggerType {
 export const CheerTriggerConfig = types
   .model({
     type: createLiteral(TriggerType.CHEER),
-    variables: types.frozen(["bits"]),
-    amount: types.optional(types.maybeNull(types.number), null),
-    matchCondition: types.optional(
-      types.enumeration(Object.keys(MatchCondition)),
-      MatchCondition.EQUALS
-    ),
+    variables: types.frozen(["bits", "username"]),
+    condition: '',
   })
   .actions((self) => ({
-    setAmount(amount: number | null) {
-      self.amount = amount;
-    },
-    setMatchCondition(condition: MatchCondition) {
-      self.matchCondition = condition;
+    setCondition(condition: string) {
+      self.condition = condition;
     },
   }));
 
 export const ChannelPointsTriggerConfig = types
   .model({
     type: createLiteral(TriggerType.CHANNEL_POINTS),
-    variables: types.frozen(["rewardMessage"]),
+    variables: types.frozen(["rewardMessage", "username"]),
     name: "",
   })
   .actions((self) => ({
@@ -69,6 +56,7 @@ export const Trigger = types
       self.type = type;
 
       if (type in ConfigTypes) {
+        // @ts-ignore: TypeScript is wrong sometimes
         self.config = ConfigTypes[type].create({});
       } else {
         self.config = null;

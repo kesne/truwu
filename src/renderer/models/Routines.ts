@@ -1,11 +1,15 @@
-import { types, destroy, detach, getSnapshot } from "mobx-state-tree";
+import { types, destroy, detach } from "mobx-state-tree";
 import { Trigger, TriggerType } from "./Triggers";
 import { Action, ActionType } from "./Actions";
+import createID from "../utils/createID";
 
 export const Routine = types
   .model({
+    id: types.optional(types.string, () => createID()),
     name: types.string,
     enabled: false,
+    requireApproval: false,
+    queue: false,
     triggers: types.optional(types.array(Trigger), []),
     actions: types.optional(types.array(Action), []),
   })
@@ -15,6 +19,12 @@ export const Routine = types
     },
     toggleEnabled() {
       self.enabled = !self.enabled;
+    },
+    toggleRequireApproval() {
+      self.requireApproval = !self.requireApproval;
+    },
+    toggleQueue() {
+      self.queue = !self.queue;
     },
     createTrigger() {
       self.triggers.push(Trigger.create({ type: TriggerType.EMPTY }));
@@ -66,5 +76,8 @@ export const Routines = types
           name: "New Routine",
         })
       );
+    },
+    deleteRoutine(routine: any) {
+      destroy(routine);
     },
   }));

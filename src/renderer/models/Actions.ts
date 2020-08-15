@@ -25,6 +25,17 @@ export const DelayActionConfig = types
     },
   }));
 
+export const TTSActionConfig = types
+  .model({
+    type: createLiteral(ActionType.TTS),
+    message: "",
+  })
+  .actions((self) => ({
+    setMessage(message: string) {
+      self.message = message;
+    },
+  }));
+
 export const DMXActionConfig = types
   .model({
     type: createLiteral(ActionType.DMX),
@@ -60,6 +71,7 @@ export const DMXActionConfig = types
 const ConfigTypes = {
   [ActionType.DELAY]: DelayActionConfig,
   [ActionType.DMX]: DMXActionConfig,
+  [ActionType.TTS]: TTSActionConfig,
 };
 
 export const Action = types
@@ -79,6 +91,7 @@ export const Action = types
       self.type = type;
 
       if (type in ConfigTypes) {
+        // @ts-ignore: TypeScript is wrong sometimes:
         self.config = ConfigTypes[type].create({});
       } else {
         self.config = null;

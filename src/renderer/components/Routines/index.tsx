@@ -12,7 +12,7 @@ export default observer(() => {
   }, [store]);
 
   return (
-    <div className="divide-y">
+    <>
       <Header
         title="Routines"
         action={
@@ -34,7 +34,7 @@ export default observer(() => {
           </button>
         }
       />
-      <div>
+      <div className="divide-y">
         <ul className="divide-y divide-gray-200">
           {store.routines.items.map((routine, i) => (
             <ListItem
@@ -44,10 +44,11 @@ export default observer(() => {
               subtitle={routine.subtitle}
               active={routine.enabled}
               incomplete={!routine.isComplete}
+              onDelete={() => store.routines.deleteRoutine(routine)}
             />
           ))}
         </ul>
       </div>
-    </div>
+    </>
   );
 });

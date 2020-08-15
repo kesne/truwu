@@ -6,6 +6,7 @@ import {
   ActionType,
   DelayActionConfig,
   DMXActionConfig,
+  TTSActionConfig,
 } from "../../models/Actions";
 
 const DelayConfig = observer(
@@ -18,6 +19,22 @@ const DelayConfig = observer(
           className="form-input block w-full sm:text-sm sm:leading-5"
           value={config.amount}
           onChange={(e) => config.setAmount(e.target.value)}
+        />
+      </div>
+    </label>
+  )
+);
+
+const TTSConfig = observer(
+  ({ config }: { config: Instance<typeof TTSActionConfig> }) => (
+    <label className="block text-sm font-medium leading-5 text-gray-700">
+      Message
+      <div className="mt-1 relative rounded-md shadow-sm">
+        <input
+          autoComplete="off"
+          className="form-input block w-full sm:text-sm sm:leading-5"
+          value={config.message}
+          onChange={(e) => config.setMessage(e.target.value)}
         />
       </div>
     </label>
@@ -99,6 +116,7 @@ const DMXConfig = observer(
 const ActionConfig = {
   [ActionType.DELAY]: DelayConfig,
   [ActionType.DMX]: DMXConfig,
+  [ActionType.TTS]: TTSConfig,
 };
 
 type Props = {
@@ -138,6 +156,7 @@ export default observer(({ action }: Props) => {
           </option>
           <option value={ActionType.DMX}>DMX Control</option>
           <option value={ActionType.DELAY}>Delay</option>
+          <option value={ActionType.TTS}>Text To Speech</option>
         </select>
       </label>
       {ConfigComponent && <ConfigComponent config={action.config} />}

@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.app-header {
+	height: 64px;
+}
+
+.header-offset {
+	top: 64px;
+}
