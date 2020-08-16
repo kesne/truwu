@@ -82,7 +82,7 @@ export default observer(({ routine }: Props) => {
               <p className="text-sm leading-5 text-blue-700">
                 The following variables are available in actions:{" "}
                 {routine.variables.map((variable, i) => (
-                  <span className="font-semibold">
+                  <span key={variable} className="font-semibold">
                     ${variable}
                     {i !== routine.variables.length - 1 && ", "}
                   </span>

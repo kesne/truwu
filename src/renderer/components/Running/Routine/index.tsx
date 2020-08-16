@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { motion } from "framer-motion";
 import { RoutineTrigger } from "../useRoutines";
 import Action from "../Action";
 import { ActionContext } from "../Action/BaseAction";
-import useQueue from "../../../utils/useQueue";
+import { ipcRenderer } from "electron";
+import say from "say";
+import { useQueue } from "../Queue";
 
 type Props = {
   routineTrigger: RoutineTrigger;
@@ -83,16 +85,39 @@ export default function Routine({ routineTrigger, onDone }: Props) {
 
   const incr = () => setActionIndex((index) => index + 1);
 
+  const finish = useRef<any>();
+  if (!finish.current) {
+    let resolve: () => void;
+    const promise = new Promise((innerResolve) => resolve = innerResolve);
+    finish.current = {
+      promise,
+      onDone() {
+        resolve();
+        onDone();
+      }
+    };
+  }
+
+  const queue = useQueue(routineTrigger.routine);
   useEffect(() => {
     if (routineTrigger.routine.queue) {
-      // TODO: Read queue Map<id, queue> from context, and enqueue a function here that
-      // will get executed and call incr.
+      queue.push(() => {
+        incr();
+        return finish.current.promise;
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (routineTrigger.routine.requireApproval) {
+      say.speak("LOOK AT true woo BITCH");
+      ipcRenderer.send("notify");
     }
   }, []);
 
   useEffect(() => {
     if (actionIndex === routineTrigger.routine.actions.length) {
-      onDone();
+      finish.current.onDone();
     }
   }, [actionIndex]);
 
@@ -110,11 +135,11 @@ export default function Routine({ routineTrigger, onDone }: Props) {
             {routineTrigger.routine.name}
           </div>
         </div>
-        {routineTrigger.routine.requireApproval && actionIndex === -1 && (
-          <Approval onDeny={() => onDone()} onApprove={incr} />
+        {routineTrigger.routine.requireApproval && actionIndex < 0 && (
+          <Approval onDeny={() => finish.current.onDone()} onApprove={incr} />
         )}
       </div>
-      <div className="mt-2">
+      <div className="mt-2 space-y-2">
         {routineTrigger.routine.actions.map((action, index) => (
           <ActionContext.Provider
             value={{

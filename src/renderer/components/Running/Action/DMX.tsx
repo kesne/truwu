@@ -2,7 +2,6 @@ import React from "react";
 import BaseAction, { BaseActionProps } from "./BaseAction";
 import useAction from "./useAction";
 import { ipcRenderer } from "electron";
-import sleep from "../../../utils/sleep";
 
 export default function DMXComponent({ action }: BaseActionProps) {
   useAction(async () => {
@@ -11,7 +10,6 @@ export default function DMXComponent({ action }: BaseActionProps) {
       updateValues[item.channel] = Number(item.value);
     });
     ipcRenderer.send("dmx", updateValues);
-    await sleep(200);
   });
 
   return (

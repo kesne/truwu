@@ -4,7 +4,7 @@ import { app, ipcMain } from "electron";
 import is from "electron-is";
 import { menubar, Menubar } from "menubar";
 import { autoUpdater } from "electron-updater";
-import DMX from 'dmx';
+import DMX from "dmx";
 
 autoUpdater.checkForUpdatesAndNotify();
 
@@ -23,6 +23,10 @@ ipcMain.on("dmx", (_event, arg) => {
   universe.update(arg);
 });
 
+ipcMain.on("notify", () => {
+  mb.tray.setImage(path.resolve(__dirname, "TruwuActive.png"));
+});
+
 app.on("ready", () => {
   mb = menubar({
     index: is.dev()
@@ -32,7 +36,7 @@ app.on("ready", () => {
           protocol: "file:",
           slashes: true,
         }),
-    // icon: path.resolve(__dirname, 'IconTemplate.png'),
+    icon: path.resolve(__dirname, "Truwu.png"),
     tooltip: "UwU",
     browserWindow: {
       //   transparent: true,
@@ -52,6 +56,10 @@ app.on("ready", () => {
     // if (is.dev()) {
     mb.window?.webContents.openDevTools({ mode: "undocked" });
     // }
+  });
+
+  mb.on("after-show", () => {
+    mb.tray.setImage(path.resolve(__dirname, "Truwu.png"));
   });
 });
 

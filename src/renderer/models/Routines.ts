@@ -1,4 +1,4 @@
-import { types, destroy, detach } from "mobx-state-tree";
+import { types, destroy, detach, clone } from "mobx-state-tree";
 import { Trigger, TriggerType } from "./Triggers";
 import { Action, ActionType } from "./Actions";
 import createID from "../utils/createID";
@@ -37,6 +37,9 @@ export const Routine = types
     },
     deleteAction(action: any) {
       destroy(action);
+    },
+    duplicateAction(action: any) {
+      self.actions.push(clone(action));
     },
     reorderAction(fromIndex: number, toIndex: number) {
       const action = self.actions[fromIndex];

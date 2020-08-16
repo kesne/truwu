@@ -12,6 +12,7 @@ export enum ActionType {
   SEND_MESSAGE = "SEND_MESSAGE",
   TTS = "TTS",
   OBS = "OBS",
+  MODIFY_VARIABLE = "MODIFY_VARIABLE",
 }
 
 export const DelayActionConfig = types
@@ -22,6 +23,43 @@ export const DelayActionConfig = types
   .actions((self) => ({
     setAmount(amount: VariableValue) {
       self.amount = amount;
+    },
+  }));
+
+export const ModifyVariableActionConfig = types
+  .model({
+    type: createLiteral(ActionType.MODIFY_VARIABLE),
+    name: "",
+    modification: "",
+    resolveAs: types.optional(
+      types.enumeration(["string", "number"]),
+      "string"
+    ),
+  })
+  .actions((self) => ({
+    setName(name: string) {
+      self.name = name;
+    },
+    setModification(modification: string) {
+      self.modification = modification;
+    },
+    setResolveAs(resolveAs: "string" | "number") {
+      self.resolveAs = resolveAs;
+    },
+  }));
+
+export const OBSActionConfig = types
+  .model({
+    type: createLiteral(ActionType.OBS),
+    name: "",
+    arguments: "",
+  })
+  .actions((self) => ({
+    setName(name: string) {
+      self.name = name;
+    },
+    setArguments(args: string) {
+      self.arguments = args;
     },
   }));
 
@@ -72,6 +110,8 @@ const ConfigTypes = {
   [ActionType.DELAY]: DelayActionConfig,
   [ActionType.DMX]: DMXActionConfig,
   [ActionType.TTS]: TTSActionConfig,
+  [ActionType.OBS]: OBSActionConfig,
+  [ActionType.MODIFY_VARIABLE]: ModifyVariableActionConfig,
 };
 
 export const Action = types
@@ -86,6 +126,10 @@ export const Action = types
     delete() {
       const routine = getParent<typeof Routine>(getParent(self));
       routine.deleteAction(self);
+    },
+    duplicate() {
+      const routine = getParent<typeof Routine>(getParent(self));
+      routine.duplicateAction(self);
     },
     setType(type: ActionType) {
       self.type = type;

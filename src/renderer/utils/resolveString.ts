@@ -8,5 +8,9 @@ export default function resolveString(
     interpolate: /\$([A-Za-z0-9]+)/g,
   });
 
-  return compiled(variables);
+  return compiled(
+    Object.fromEntries(
+      Object.entries(variables).map(([key, value]) => [key.slice(1), value])
+    )
+  );
 }

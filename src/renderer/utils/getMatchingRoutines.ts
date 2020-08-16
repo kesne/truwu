@@ -30,12 +30,6 @@ export default function getMatchingRoutines(
         return true;
       }
 
-      console.log('CHECK CHEER', {
-        type: trigger.type === TriggerType.CHEER,
-        isCheer: event.type === "TWITCH_CHEER",
-        boolean: resolveBoolean(trigger.config.condition, getVariables(event.data)),
-      })
-
       if (
         trigger.type === TriggerType.CHEER &&
         event.type === "TWITCH_CHEER" &&
