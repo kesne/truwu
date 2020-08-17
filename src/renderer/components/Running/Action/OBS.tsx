@@ -4,7 +4,7 @@ import OBSWebSocket from "obs-websocket-js";
 import BaseAction, { BaseActionProps } from "./BaseAction";
 import useAction from "./useAction";
 import resolveString from "../../../utils/resolveString";
-import getVariables, { globalVariables } from "../../../utils/getVariables";
+import getVariables from "../../../utils/getVariables";
 
 // TODO: Configure this in settings
 // These are the names that my streaming PC (which runs OBS) has existed under

@@ -7,7 +7,8 @@
     "start": "electron-webpack dev",
     "compile": "electron-webpack --env.minify=false",
     "package": "electron-builder",
-    "build": "yarn compile && yarn package"
+    "build": "yarn compile && yarn package",
+    "release": "yarn version && git push && git push --tags"
   },
   "dependencies": {
     "@types/lodash": "^4.14.159",
