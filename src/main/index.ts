@@ -37,7 +37,7 @@ app.on("ready", () => {
           slashes: true,
         }),
     icon: path.resolve(__dirname, "Truwu.png"),
-    tooltip: "UwU",
+    tooltip: "truwu",
     browserWindow: {
       //   transparent: true,
       //   resizable: false,
@@ -53,9 +53,9 @@ app.on("ready", () => {
   });
 
   mb.on("after-create-window", () => {
-    // if (is.dev()) {
-    mb.window?.webContents.openDevTools({ mode: "undocked" });
-    // }
+    if (is.dev()) {
+      mb.window?.webContents.openDevTools({ mode: "undocked" });
+    }
   });
 
   mb.on("after-show", () => {

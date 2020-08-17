@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: yarn install, build, and publish
+      run: |
+        yarn install
+        yarn run compile
+        yarn run package --mac --publish always
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
