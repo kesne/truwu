@@ -2,7 +2,7 @@ import React, { createContext, useContext } from "react";
 import clsx from "clsx";
 import { RoutineTrigger } from "../useRoutines";
 import { SnapshotOut } from "mobx-state-tree";
-import { Action } from "../../../models/Actions";
+import { Action } from "../../../../models/Actions";
 
 type State = "pending" | "running" | "complete";
 

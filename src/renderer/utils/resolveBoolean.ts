@@ -11,7 +11,6 @@ export default function resolveBoolean(
   source: string,
   variables: Record<string, any>
 ) {
-  console.log(source, variables);
   const template = parser.parse(String(source));
   const value = template.eval(variables);
   return Boolean(value);

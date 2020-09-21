@@ -1,5 +1,5 @@
 import React from "react";
-import { ActionType } from "../../../models/Actions";
+import { ActionType } from "../../../../models/Actions";
 import TTS from "./TTS";
 import { BaseActionProps } from "./BaseAction";
 import Delay from "./Delay";

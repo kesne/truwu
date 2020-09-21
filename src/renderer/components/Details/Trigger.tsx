@@ -6,7 +6,7 @@ import {
   TriggerType,
   CheerTriggerConfig,
   ChannelPointsTriggerConfig,
-} from "../../models/Triggers";
+} from "../../../models/Triggers";
 
 // function Message() {
 //   return (

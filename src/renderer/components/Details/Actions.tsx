@@ -6,7 +6,7 @@ import {
   DroppableProvided,
 } from "react-beautiful-dnd";
 import Action from "./Action";
-import { Routine } from "../../models/Routines";
+import { Routine } from "../../../models/Routines";
 import { Instance } from "mobx-state-tree";
 import { observer } from "mobx-react-lite";
 

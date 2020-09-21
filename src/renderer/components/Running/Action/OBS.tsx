@@ -5,24 +5,22 @@ import BaseAction, { BaseActionProps } from "./BaseAction";
 import useAction from "./useAction";
 import resolveString from "../../../utils/resolveString";
 import getVariables from "../../../utils/getVariables";
-
-// TODO: Configure this in settings
-// These are the names that my streaming PC (which runs OBS) has existed under
-const STREAM_PC_NAMES = [
-  "gaming-desktop-nzxt.localdomain",
-  "vjj-streaming-pc.localdomain",
-];
+import { rootStore } from "../../../../models";
 
 async function connect() {
-  const devices = await find();
-  const device = devices.find((device) =>
-    STREAM_PC_NAMES.includes(device.name)
-  );
-  if (!device) {
-    throw new Error("Could not find streaming PC on network.");
+  let location = "localhost";
+  if (rootStore.settings.computerNames().length) {
+    const devices = await find();
+    const device = devices.find((device) =>
+      rootStore.settings.computerNames().includes(device.name)
+    );
+    if (!device) {
+      throw new Error("Could not find streaming PC on network.");
+    }
+    location = device.ip;
   }
   const obs = new OBSWebSocket();
-  await obs.connect({ address: `${device.ip}:4444` });
+  await obs.connect({ address: `${location}:4444` });
   return obs;
 }
 
@@ -52,7 +50,6 @@ export default function OBS({ action, routineTrigger }: BaseActionProps) {
         )
       )
     );
-    console.log(obsArgs);
     const obs = await connectionPromise;
     await obs.send(action.config.name, obsArgs);
   });

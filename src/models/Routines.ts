@@ -1,7 +1,7 @@
 import { types, destroy, detach, clone } from "mobx-state-tree";
 import { Trigger, TriggerType } from "./Triggers";
 import { Action, ActionType } from "./Actions";
-import createID from "../utils/createID";
+import createID from "./createID";
 
 export const Routine = types
   .model({

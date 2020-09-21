@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import nodeAdapter from "axios/lib/adapters/http";
 
@@ -8,15 +8,19 @@ export default function useQuirkConnection(
   apiKey: string,
   onMessage: (event: Record<string, any>) => void
 ) {
+  const [connected, setConnected] = useState(false);
+
   useEffect(() => {
+    if (connected) return;
+
     let websocket: WebSocket;
     const source = axios.CancelToken.source();
 
     (async () => {
-      const response = await axios.post<{ token: string }>(
+      const response = await axios.post<{ access_token: string }>(
         `https://${QUIRK_DOMAIN}/token`,
         {
-          auth_token: apiKey,
+          access_token: apiKey,
         },
         {
           adapter: nodeAdapter,
@@ -25,15 +29,19 @@ export default function useQuirkConnection(
       );
 
       websocket = new WebSocket(
-        `wss://${QUIRK_DOMAIN}?token=${response.data.token}`
+        `wss://${QUIRK_DOMAIN}?access_token=${response.data.access_token}`
       );
 
-      websocket.addEventListener("open", () => console.log("connected"));
-      websocket.addEventListener("error", console.log);
+      websocket.addEventListener("open", () => console.log("Connected to Quirk"));
+      websocket.addEventListener("error", () => {
+        setConnected(false);
+      });
       websocket.addEventListener("message", (event) => {
         onMessage(JSON.parse(event.data));
       });
-      websocket.addEventListener("close", console.log);
+      websocket.addEventListener("close", () => {
+        setConnected(false);
+      });
     })();
 
     return () => {
@@ -43,5 +51,5 @@ export default function useQuirkConnection(
         websocket.close();
       }
     };
-  }, [apiKey]);
+  }, [apiKey, connected]);
 }

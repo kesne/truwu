@@ -10,7 +10,7 @@ import {
   TTSActionConfig,
   OBSActionConfig,
   ModifyVariableActionConfig,
-} from "../../models/Actions";
+} from "../../../models/Actions";
 
 const DelayConfig = observer(
   ({ config }: { config: Instance<typeof DelayActionConfig> }) => (

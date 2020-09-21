@@ -1,6 +1,6 @@
 import { SnapshotOut } from "mobx-state-tree";
-import { Routine } from "../models/Routines";
-import { TriggerType } from "../models/Triggers";
+import { Routine } from "../../models/Routines";
+import { TriggerType } from "../../models/Triggers";
 import getVariables from "./getVariables";
 import resolveBoolean from "./resolveBoolean";
 
@@ -20,8 +20,6 @@ export default function getMatchingRoutines(
     }
 
     return routine.triggers.some((trigger) => {
-      console.log("Checking trigger...", { event, trigger });
-
       if (
         trigger.type === TriggerType.CHANNEL_POINTS &&
         event.type === "TWITCH_CHANNEL_REWARD" &&

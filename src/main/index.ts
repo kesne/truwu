@@ -5,6 +5,8 @@ import is from "electron-is";
 import { menubar, Menubar } from "menubar";
 import { autoUpdater } from "electron-updater";
 import DMX from "dmx";
+import { rootStore } from "../models";
+import { onSnapshot } from "mobx-state-tree";
 
 autoUpdater.checkForUpdatesAndNotify();
 
@@ -12,19 +14,34 @@ let mb: Menubar;
 
 app.commandLine.appendSwitch("ignore-certificate-errors");
 
-const dmx = new DMX();
-// TODO: Move the configuration of this to settings.
-const universe = dmx.addUniverse(
-  "fog",
-  "dmxking-ultra-dmx-pro",
-  "/dev/cu.usbserial-6A4W21TF"
-);
-ipcMain.on("dmx", (_event, arg) => {
-  universe.update(arg);
-});
+let dmxAddress = rootStore.settings.dmxAddress;
+let disconnect = () => {};
+function connectToDMX() {
+  disconnect();
+  const dmx = new DMX();
+  const universe = dmx.addUniverse("fog", "dmxking-ultra-dmx-pro", dmxAddress);
+  const handleDMX = (_event: any, arg: any) => {
+    universe.update(arg);
+  };
+  ipcMain.on("dmx", handleDMX);
+  disconnect = () => {
+    ipcMain.off("dmx", handleDMX);
+  };
+}
+
+if (dmxAddress) {
+  onSnapshot(rootStore, (nextSnapshot) => {
+    if (dmxAddress !== nextSnapshot.settings.dmxAddress) {
+      dmxAddress = nextSnapshot.settings.dmxAddress;
+      connectToDMX();
+    }
+  });
+}
 
 ipcMain.on("notify", () => {
-  mb.tray.setImage(path.resolve(__dirname, "TruwuActive.png"));
+  if (!mb.window?.isFocused) {
+    mb.tray.setImage(path.resolve(__dirname, "TruwuActive.png"));
+  }
 });
 
 app.on("ready", () => {

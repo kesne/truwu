@@ -12,11 +12,6 @@ export default function ModifyVariable({
   useAction(async () => {
     const variables = getVariables(routineTrigger.event.data);
 
-    console.log({
-      variables,
-      resolved: resolveNumber(action.config.modification, variables),
-    });
-
     globalVariables[action.config.name] =
       action.config.resolveAs === "string"
         ? resolveString(action.config.modification, variables)

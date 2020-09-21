@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import Header from "../Header";
 import Toggle from "./Toggle";
 import Trigger from "./Trigger";
-import { useMst } from "../../models";
+import { useMst } from "../MSTContext";
 import Actions from "./Actions";
 
 function SectionHeader({
