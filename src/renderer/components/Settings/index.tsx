@@ -2,6 +2,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import Header from "../Header";
 import { useMst } from "../MSTContext";
+import Toggle from "./Toggle";
 
 export default observer(() => {
   const store = useMst();
@@ -59,6 +60,15 @@ export default observer(() => {
               />
             </div>
           </p>
+        </div>
+        <div className="p-6">
+          <div className="flex justify-between items-center">
+            <div className="font-bold text-xl">Auto-Connect On Launch</div>
+            <Toggle
+              checked={store.settings.autoStart}
+              onClick={store.settings.toggleAutoStart}
+            />
+          </div>
         </div>
       </div>
     </>

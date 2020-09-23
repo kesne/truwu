@@ -9,11 +9,14 @@ import Home from "./components/Home";
 import Settings from "./components/Settings";
 import Running from "./components/Running";
 import { Provider } from "./components/MSTContext";
+import { rootStore } from "../models";
 
 function App() {
   return (
     <Provider>
-      <MemoryRouter>
+      <MemoryRouter
+        initialEntries={[rootStore.settings.autoStart ? "/running" : "/"]}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="running" element={<Running />} />

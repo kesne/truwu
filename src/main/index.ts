@@ -66,7 +66,7 @@ app.on("ready", () => {
       },
     },
     showOnAllWorkspaces: false,
-    // preloadWindow: true,
+    preloadWindow: true,
   });
 
   mb.on("after-create-window", () => {

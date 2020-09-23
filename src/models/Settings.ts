@@ -6,6 +6,7 @@ export const Settings = types
     lifxAPIKey: "",
     dmxAddress: "",
     obsComputerName: "",
+    autoStart: true,
   })
   .actions((self) => ({
     setQuirkAPIKey(value: string) {
@@ -20,6 +21,9 @@ export const Settings = types
     setOBSComputerName(name: string) {
       self.obsComputerName = name;
     },
+    toggleAutoStart() {
+      self.autoStart = !self.autoStart;
+    }
   }))
   .views((self) => ({
     computerNames() {

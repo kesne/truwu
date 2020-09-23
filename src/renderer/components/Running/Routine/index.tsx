@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { RoutineTrigger } from "../useRoutines";
 import Action from "../Action";
 import { ActionContext } from "../Action/BaseAction";
@@ -88,13 +87,13 @@ export default function Routine({ routineTrigger, onDone }: Props) {
   const finish = useRef<any>();
   if (!finish.current) {
     let resolve: () => void;
-    const promise = new Promise((innerResolve) => resolve = innerResolve);
+    const promise = new Promise((innerResolve) => (resolve = innerResolve));
     finish.current = {
       promise,
       onDone() {
         resolve();
         onDone();
-      }
+      },
     };
   }
 
@@ -122,13 +121,7 @@ export default function Routine({ routineTrigger, onDone }: Props) {
   }, [actionIndex]);
 
   return (
-    <motion.li
-      layout
-      className="bg-white rounded shadow mx-2 p-3"
-      initial={{ y: -150, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: -150, opacity: 0 }}
-    >
+    <div className="bg-white rounded shadow mx-2 p-3">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <div className="text-gray-900 font-medium text-lg">
@@ -160,6 +153,6 @@ export default function Routine({ routineTrigger, onDone }: Props) {
           </ActionContext.Provider>
         ))}
       </div>
-    </motion.li>
+    </div>
   );
 }
