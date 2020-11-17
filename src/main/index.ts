@@ -21,8 +21,10 @@ function connectToDMX() {
   const dmx = new DMX();
   const universe = dmx.addUniverse("fog", "dmxking-ultra-dmx-pro", dmxAddress);
   const handleDMX = (_event: any, arg: any) => {
+    console.log('SENDING TO DMX', arg);
     universe.update(arg);
   };
+  console.log('Listening to DMX');
   ipcMain.on("dmx", handleDMX);
   disconnect = () => {
     ipcMain.off("dmx", handleDMX);
@@ -30,6 +32,7 @@ function connectToDMX() {
 }
 
 if (dmxAddress) {
+  connectToDMX();
   onSnapshot(rootStore, (nextSnapshot) => {
     if (dmxAddress !== nextSnapshot.settings.dmxAddress) {
       dmxAddress = nextSnapshot.settings.dmxAddress;
@@ -37,12 +40,6 @@ if (dmxAddress) {
     }
   });
 }
-
-ipcMain.on("notify", () => {
-  if (!mb.window?.isFocused) {
-    mb.tray.setImage(path.resolve(__dirname, "TruwuActive.png"));
-  }
-});
 
 app.on("ready", () => {
   mb = menubar({
@@ -53,7 +50,7 @@ app.on("ready", () => {
           protocol: "file:",
           slashes: true,
         }),
-    icon: path.resolve(__dirname, "Truwu.png"),
+    icon: path.resolve(__dirname, "truwuTemplate.png"),
     tooltip: "truwu",
     browserWindow: {
       //   transparent: true,
